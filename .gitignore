@@ -1,0 +1,12 @@
+# Ignore hidden files
+.python-version
+**/.DS_Store
+
+# Ignore pytest cache
+**/.pytest_cache
+
+# Ignore pycache
+__pycache__/
+
+# Ignore env variables
+.env
