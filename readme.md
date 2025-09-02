@@ -2,7 +2,7 @@
 FastAPI-powered API for text summarization, metadata extraction, and keyword analysis
 
 # Overview 📗
-This repository contains a FastAPI-based API that ingests unstructured text, summarizes it, extracts structured metadata (title, topics, sentiment), and identifies the three most common nouns as keywords. It integrates OpenAI for LLM-powered analysis and uses PostgreSQL (via Docker) for result persistence. Documentation is auto-generated at:
+This repository contains a FastAPI-based API that ingests text, summarizes it, extracts structured metadata (title, topics, sentiment), and identifies the three most common nouns as keywords. It integrates OpenAI for LLM-powered analysis, uses spaCy for keyword analysis, and uses PostgreSQL (via Docker) for result persistence. Documentation is auto-generated at:
 
 Swagger: `/docs`
 
@@ -35,14 +35,14 @@ The project is structured for modularity and maintainability. Each responsibilit
 ## Project Setup 
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-repo/llm-knowledge-extractor.git
-cd llm-knowledge-extractor
+git clone https://github.com/chuboyo/llm_knowledge_extractor.git
+cd llm_knowledge_extractor
 
 # 2. Create a .env file in the root directory
 cat <<EOT >> .env
-POSTGRES_DB=<postgresdb>
-POSTGRES_USER=<postgresuser>
-POSTGRES_PASSWORD=<postgrespass>
+POSTGRES_DB=<yourpostgresdb>
+POSTGRES_USER=<yourpostgresuser>
+POSTGRES_PASSWORD=<yourpostgrespass>
 DATABASE_URL=postgresql://<POSTGRES_USER>:<POSTGRES_PASS>@db:5432/<POSTGRES_DB>
 OPENAI_API_KEY=sk-xxxx
 PGADMIN_DEFAULT_EMAIL=<pgadminemail>
@@ -52,4 +52,22 @@ EOT
 # 3. Build & run with Docker Compose
 docker compose up --build
 
+```
+
+# Testing
+You can test the API in a couple of ways. Here are some options:
+
+1. **Via Swagger UI**  
+   Open your browser and navigate to:  
+   `http://127.0.0.1:8000/docs`  
+   This provides an interactive interface where you can send requests and view responses.
+
+2. **Using `curl`**  
+   Run the command below in your terminal. Replace the `"text"` field with your own input (make sure to properly escape special characters or quotes in your text).
+```bash
+curl -X POST "http://127.0.0.1:8000/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "text": "Docker is an open-source platform for building, shipping, and running applications in containers."
+      }'
 ```
